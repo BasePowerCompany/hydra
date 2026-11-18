@@ -6,7 +6,18 @@ package fosite
 import (
 	"context"
 	"net/http"
+	"net/url"
 )
+
+// identifyIssuer sets the RFC 9207 `iss` authorization response parameter,
+// which lets a client that talks to several authorization servers tell which
+// one answered (the mix-up attack). Its value is the issuer the discovery
+// document publishes. Nothing is set without a configured issuer.
+func (f *Fosite) identifyIssuer(ctx context.Context, parameters url.Values) {
+	if issuer := f.Config.GetIDTokenIssuer(ctx); issuer != "" {
+		parameters.Set("iss", issuer)
+	}
+}
 
 func (f *Fosite) WriteAuthorizeResponse(ctx context.Context, rw http.ResponseWriter, ar AuthorizeRequester, resp AuthorizeResponder) {
 	// Set custom headers, e.g. "X-MySuperCoolCustomHeader" or "X-DONT-CACHE-ME"...
@@ -24,12 +35,15 @@ func (f *Fosite) WriteAuthorizeResponse(ctx context.Context, rw http.ResponseWri
 	case ResponseModeFormPost:
 		//form_post
 		rw.Header().Add("Content-Type", "text/html;charset=UTF-8")
-		WriteAuthorizeFormPostResponse(redir.String(), resp.GetParameters(), GetPostFormHTMLTemplate(ctx, f), rw)
+		parameters := resp.GetParameters()
+		f.identifyIssuer(ctx, parameters)
+		WriteAuthorizeFormPostResponse(redir.String(), parameters, GetPostFormHTMLTemplate(ctx, f), rw)
 		return
 	case ResponseModeQuery, ResponseModeDefault:
 		// Explicit grants
 		q := redir.Query()
 		rq := resp.GetParameters()
+		f.identifyIssuer(ctx, rq)
 		for k := range rq {
 			q.Set(k, rq.Get(k))
 		}
@@ -43,6 +57,7 @@ func (f *Fosite) WriteAuthorizeResponse(ctx context.Context, rw http.ResponseWri
 
 		u := redir.String()
 		fr := resp.GetParameters()
+		f.identifyIssuer(ctx, fr)
 		if len(fr) > 0 {
 			u = u + "#" + fr.Encode()
 		}

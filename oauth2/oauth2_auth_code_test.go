@@ -269,8 +269,10 @@ func TestAuthCodeWithDefaultStrategy(t *testing.T) {
 			t.Run("case=checks if request fails when audience does not match", func(t *testing.T) {
 				testhelpers.NewLoginConsentUI(t, reg.Config(), testhelpers.HTTPServerNoExpectedCallHandler(t), testhelpers.HTTPServerNoExpectedCallHandler(t))
 				_, conf := newOAuth2Client(t, reg, testhelpers.NewCallbackURL(t, "callback", testhelpers.HTTPServerNotImplementedHandler))
-				code, _ := getAuthorizeCode(t, conf, nil, oauth2.SetAuthURLParam("audience", "https://not-ory-api/"))
+				code, resp := getAuthorizeCode(t, conf, nil, oauth2.SetAuthURLParam("audience", "https://not-ory-api/"))
 				require.Empty(t, code)
+				require.NotEmpty(t, resp.Request.URL.Query().Get("error"))
+				assert.Equal(t, reg.Config().IssuerURL(ctx).String(), resp.Request.URL.Query().Get("iss"), "RFC 9207: an error response identifies the issuer too")
 			})
 
 			t.Run("case=perform authorize code flow with ID token and refresh tokens", func(t *testing.T) {
@@ -281,8 +283,9 @@ func TestAuthCodeWithDefaultStrategy(t *testing.T) {
 						acceptConsentHandler(t, c, adminClient, reg, subject, nil),
 					)
 
-					code, _ := getAuthorizeCode(t, conf, nil, oauth2.SetAuthURLParam("nonce", nonce))
+					code, resp := getAuthorizeCode(t, conf, nil, oauth2.SetAuthURLParam("nonce", nonce))
 					require.NotEmpty(t, code)
+					assert.Equal(t, reg.Config().IssuerURL(ctx).String(), resp.Request.URL.Query().Get("iss"), "RFC 9207: the authorization response identifies the issuer")
 					token, err := conf.Exchange(context.Background(), code)
 					iat := time.Now()
 					require.NoError(t, err)

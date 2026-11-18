@@ -46,6 +46,9 @@ func (f *Fosite) WriteAuthorizeError(ctx context.Context, rw http.ResponseWriter
 
 	errors := rfcerr.ToValues()
 	errors.Set("state", ar.GetState())
+	// RFC 9207 covers error responses too: a client must not act on an error
+	// it cannot attribute to the authorization server it asked.
+	f.identifyIssuer(ctx, errors)
 
 	var redirectURIString string
 	if ar.GetResponseMode() == ResponseModeFormPost {

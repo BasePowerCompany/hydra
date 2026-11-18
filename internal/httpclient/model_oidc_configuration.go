@@ -24,6 +24,8 @@ var _ MappedNullable = &OidcConfiguration{}
 type OidcConfiguration struct {
 	// OAuth 2.0 Authorization Endpoint URL
 	AuthorizationEndpoint string `json:"authorization_endpoint"`
+	// OAuth 2.0 Authorization Server Issuer Identification Supported  Boolean value specifying whether the authorization server provides the `iss` parameter in the authorization response, as defined in RFC 9207.
+	AuthorizationResponseIssParameterSupported *bool `json:"authorization_response_iss_parameter_supported,omitempty"`
 	// OpenID Connect Back-Channel Logout Session Required  Boolean value specifying whether the OP can pass a sid (session ID) Claim in the Logout Token to identify the RP session with the OP. If supported, the sid Claim is also included in ID Tokens issued by the OP
 	BackchannelLogoutSessionSupported *bool `json:"backchannel_logout_session_supported,omitempty"`
 	// OpenID Connect Back-Channel Logout Supported  Boolean value specifying whether the OP supports back-channel logout, with true indicating support.
@@ -139,6 +141,38 @@ func (o *OidcConfiguration) GetAuthorizationEndpointOk() (*string, bool) {
 // SetAuthorizationEndpoint sets field value
 func (o *OidcConfiguration) SetAuthorizationEndpoint(v string) {
 	o.AuthorizationEndpoint = v
+}
+
+// GetAuthorizationResponseIssParameterSupported returns the AuthorizationResponseIssParameterSupported field value if set, zero value otherwise.
+func (o *OidcConfiguration) GetAuthorizationResponseIssParameterSupported() bool {
+	if o == nil || IsNil(o.AuthorizationResponseIssParameterSupported) {
+		var ret bool
+		return ret
+	}
+	return *o.AuthorizationResponseIssParameterSupported
+}
+
+// GetAuthorizationResponseIssParameterSupportedOk returns a tuple with the AuthorizationResponseIssParameterSupported field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *OidcConfiguration) GetAuthorizationResponseIssParameterSupportedOk() (*bool, bool) {
+	if o == nil || IsNil(o.AuthorizationResponseIssParameterSupported) {
+		return nil, false
+	}
+	return o.AuthorizationResponseIssParameterSupported, true
+}
+
+// HasAuthorizationResponseIssParameterSupported returns a boolean if a field has been set.
+func (o *OidcConfiguration) HasAuthorizationResponseIssParameterSupported() bool {
+	if o != nil && !IsNil(o.AuthorizationResponseIssParameterSupported) {
+		return true
+	}
+
+	return false
+}
+
+// SetAuthorizationResponseIssParameterSupported gets a reference to the given bool and assigns it to the AuthorizationResponseIssParameterSupported field.
+func (o *OidcConfiguration) SetAuthorizationResponseIssParameterSupported(v bool) {
+	o.AuthorizationResponseIssParameterSupported = &v
 }
 
 // GetBackchannelLogoutSessionSupported returns the BackchannelLogoutSessionSupported field value if set, zero value otherwise.
@@ -1072,6 +1106,9 @@ func (o OidcConfiguration) MarshalJSON() ([]byte, error) {
 func (o OidcConfiguration) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["authorization_endpoint"] = o.AuthorizationEndpoint
+	if !IsNil(o.AuthorizationResponseIssParameterSupported) {
+		toSerialize["authorization_response_iss_parameter_supported"] = o.AuthorizationResponseIssParameterSupported
+	}
 	if !IsNil(o.BackchannelLogoutSessionSupported) {
 		toSerialize["backchannel_logout_session_supported"] = o.BackchannelLogoutSessionSupported
 	}
