@@ -3413,6 +3413,10 @@
           "type": "string",
           "example": "https://playground.ory.sh/ory-hydra/public/oauth2/auth"
         },
+        "authorization_response_iss_parameter_supported": {
+          "description": "OAuth 2.0 Authorization Server Issuer Identification Supported\n\nBoolean value specifying whether the authorization server provides the `iss` parameter in the authorization\nresponse, as defined in RFC 9207.",
+          "type": "boolean"
+        },
         "backchannel_logout_session_supported": {
           "description": "OpenID Connect Back-Channel Logout Session Required\n\nBoolean value specifying whether the OP can pass a sid (session ID) Claim in the Logout Token to identify the RP\nsession with the OP. If supported, the sid Claim is also included in ID Tokens issued by the OP",
           "type": "boolean"

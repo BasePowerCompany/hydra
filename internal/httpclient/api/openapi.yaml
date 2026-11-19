@@ -4160,6 +4160,7 @@ components:
         token_endpoint_auth_methods_supported:
         - token_endpoint_auth_methods_supported
         - token_endpoint_auth_methods_supported
+        authorization_response_iss_parameter_supported: true
         backchannel_logout_session_supported: true
         response_modes_supported:
         - response_modes_supported
@@ -4222,6 +4223,13 @@ components:
           description: OAuth 2.0 Authorization Endpoint URL
           example: https://playground.ory.sh/ory-hydra/public/oauth2/auth
           type: string
+        authorization_response_iss_parameter_supported:
+          description: |-
+            OAuth 2.0 Authorization Server Issuer Identification Supported
+
+            Boolean value specifying whether the authorization server provides the `iss` parameter in the authorization
+            response, as defined in RFC 9207.
+          type: boolean
         backchannel_logout_session_supported:
           description: |-
             OpenID Connect Back-Channel Logout Session Required

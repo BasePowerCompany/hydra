@@ -5,6 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **AuthorizationEndpoint** | **string** | OAuth 2.0 Authorization Endpoint URL | 
+**AuthorizationResponseIssParameterSupported** | Pointer to **bool** | OAuth 2.0 Authorization Server Issuer Identification Supported  Boolean value specifying whether the authorization server provides the &#x60;iss&#x60; parameter in the authorization response, as defined in RFC 9207. | [optional] 
 **BackchannelLogoutSessionSupported** | Pointer to **bool** | OpenID Connect Back-Channel Logout Session Required  Boolean value specifying whether the OP can pass a sid (session ID) Claim in the Logout Token to identify the RP session with the OP. If supported, the sid Claim is also included in ID Tokens issued by the OP | [optional] 
 **BackchannelLogoutSupported** | Pointer to **bool** | OpenID Connect Back-Channel Logout Supported  Boolean value specifying whether the OP supports back-channel logout, with true indicating support. | [optional] 
 **ClaimsParameterSupported** | Pointer to **bool** | OpenID Connect Claims Parameter Parameter Supported  Boolean value specifying whether the OP supports use of the claims parameter, with true indicating support. | [optional] 
@@ -75,6 +76,31 @@ and a boolean to check if the value has been set.
 
 SetAuthorizationEndpoint sets AuthorizationEndpoint field to given value.
 
+
+### GetAuthorizationResponseIssParameterSupported
+
+`func (o *OidcConfiguration) GetAuthorizationResponseIssParameterSupported() bool`
+
+GetAuthorizationResponseIssParameterSupported returns the AuthorizationResponseIssParameterSupported field if non-nil, zero value otherwise.
+
+### GetAuthorizationResponseIssParameterSupportedOk
+
+`func (o *OidcConfiguration) GetAuthorizationResponseIssParameterSupportedOk() (*bool, bool)`
+
+GetAuthorizationResponseIssParameterSupportedOk returns a tuple with the AuthorizationResponseIssParameterSupported field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetAuthorizationResponseIssParameterSupported
+
+`func (o *OidcConfiguration) SetAuthorizationResponseIssParameterSupported(v bool)`
+
+SetAuthorizationResponseIssParameterSupported sets AuthorizationResponseIssParameterSupported field to given value.
+
+### HasAuthorizationResponseIssParameterSupported
+
+`func (o *OidcConfiguration) HasAuthorizationResponseIssParameterSupported() bool`
+
+HasAuthorizationResponseIssParameterSupported returns a boolean if a field has been set.
 
 ### GetBackchannelLogoutSessionSupported
 

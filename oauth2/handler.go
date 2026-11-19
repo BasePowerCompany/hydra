@@ -451,6 +451,12 @@ type oidcConfiguration struct {
 	// by this authorization server.
 	CodeChallengeMethodsSupported []string `json:"code_challenge_methods_supported"`
 
+	// OAuth 2.0 Authorization Server Issuer Identification Supported
+	//
+	// Boolean value specifying whether the authorization server provides the `iss` parameter in the authorization
+	// response, as defined in RFC 9207.
+	AuthorizationResponseIssParameterSupported bool `json:"authorization_response_iss_parameter_supported"`
+
 	// OpenID Connect Verifiable Credentials Endpoint
 	//
 	// Contains the URL of the Verifiable Credentials Endpoint.
@@ -517,6 +523,9 @@ func (h *Handler) discoverOidcConfiguration(w http.ResponseWriter, r *http.Reque
 		return
 	}
 	h.r.Writer().Write(w, r, &oidcConfiguration{
+		// fosite sets `iss` on every authorization response it sends to a client.
+		AuthorizationResponseIssParameterSupported: true,
+
 		Issuer:                                 h.c.IssuerURL(ctx).String(),
 		AuthURL:                                h.c.OAuth2AuthURL(ctx).String(),
 		DeviceAuthorizationURL:                 h.c.OAuth2DeviceAuthorisationURL(ctx).String(),
